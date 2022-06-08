@@ -1071,7 +1071,7 @@ class C_wali_kelas extends BaseController
 
 	public function dashboard()
 	{
-		dd(session()->get('ID_SUB_KLS'));
+		// dd(session()->get('ID_SUB_KLS'));
 		$data = [
 			'title' => 'Dahboa Siswa | SDN Sidoketo',
 			// 'NilaiEkskul' => $NilaiEkskul,
