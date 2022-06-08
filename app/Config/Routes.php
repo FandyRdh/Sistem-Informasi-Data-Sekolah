@@ -36,7 +36,7 @@ $routes->setAutoRoute(true);
 // Landing Page
 $routes->get('/', 'C_Landing_Page::Login');
 $routes->get('/Login', 'C_Landing_Page::Login');
-$routes->get('/Login', 'C_Landing_Page::Logut');
+$routes->get('/Logout', 'C_Landing_Page::Logout');
 $routes->get('/About', 'C_Landing_Page::About');
 $routes->get('/Login/Logic_Login', 'C_Landing_Page::Logic_Login');
 
