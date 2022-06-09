@@ -38,18 +38,36 @@
                         <div class="row my-4">
                             <!-- Small table -->
                             <div class="col-md-12">
-                                <?php if (session()->getFlashdata('pesan_hapus')) : ?>
+                                <?php if (session()->getFlashdata('pesan_update')) : ?>
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <?php echo session()->getFlashdata('pesan_hapus'); ?>
+                                        <?php echo session()->getFlashdata('pesan_update'); ?>
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                 <?php endif; ?>
 
-                                <?php if (session()->getFlashdata('pesan_insert2')) : ?>
+                                <?php if (session()->getFlashdata('pesan_insert_berhasil')) : ?>
+                                    <div class="alert alert-success alert-dismissable fade show" role="alert">
+                                        <?php echo session()->getFlashdata('pesan_insert_berhasil'); ?>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if (session()->getFlashdata('pesan_insert_gagal')) : ?>
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <?php echo session()->getFlashdata('pesan_insert2'); ?>
+                                        <?php echo session()->getFlashdata('pesan_insert_gagal'); ?>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if (session()->getFlashdata('pesan_hapus')) : ?>
+                                    <div class="alert alert-success alert-dismissable fade show" role="alert">
+                                        <?php echo session()->getFlashdata('pesan_hapus'); ?>
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -154,42 +172,8 @@
                                                                 <td><?= $O['DESKRIPSI']; ?></td>
                                                                 <td>
                                                                     <button data-toggle="modal" data-target="#editModal" class="btn btn-outline-primary btn-sm btn-edit" data-nisn="<?= $O['NISN']; ?>" data-nis="<?= $O['NIS']; ?>" data-nama="<?= $O['NAMA_LENGKAP']; ?>" data-aspek="<?= $O['ASPEK_PENILAIAN']; ?>" data-nilai="<?= $O['NILAI_KEPRIBADIAN']; ?>" data-deskripsi="<?= $O['DESKRIPSI']; ?>">Edit</button>
-                                                                </td>
-                                                            </tr>
-                                                        <?php endforeach; ?>
-                                                    </tbody>
-                                                </table>
-                                            </div>
 
-                                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                                                <table class="table datatables" id="dataTable-2">
-                                                    <thead>
-                                                        <tr>
-                                                            <th></th>
-                                                            <th>NIS</th>
-                                                            <th>Nama</th>
-                                                            <th>Sakit</th>
-                                                            <th>Izin</th>
-                                                            <th>Alpha</th>
-                                                            <th>Aksi</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php foreach ($NilaiKepribadian->getResultArray() as $O) : ?>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="custom-control custom-checkbox">
-                                                                        <input type="checkbox" class="custom-control-input">
-                                                                        <label class="custom-control-label"></label>
-                                                                    </div>
-                                                                </td>
-                                                                <td><?= $O['NIS']; ?></td>
-                                                                <td><?= $O['NAMA_LENGKAP']; ?></td>
-                                                                <td><?= $O['ASPEK_PENILAIAN']; ?></td>
-                                                                <td><?= $O['NILAI_KEPRIBADIAN']; ?></td>
-                                                                <td><?= $O['DESKRIPSI']; ?></td>
-                                                                <td>
-                                                                    <button data-toggle="modal" data-target="#editModal" class="btn btn-outline-primary btn-sm btn-edit" data-nisn="<?= $O['NISN']; ?>" data-nis="<?= $O['NIS']; ?>" data-nama="<?= $O['NAMA_LENGKAP']; ?>" data-aspek="<?= $O['ASPEK_PENILAIAN']; ?>" data-nilai="<?= $O['NILAI_KEPRIBADIAN']; ?>" data-deskripsi="<?= $O['DESKRIPSI']; ?>">Edit</button>
+                                                                    <button data-toggle="modal-delete" data-target="#deleteModal" class="btn-outline-danger btn btn-sm btn-delete" data-nisn="<?= $O['NISN']; ?>" data-nis="<?= $O['NIS']; ?>" data-nama="<?= $O['NAMA_LENGKAP']; ?>" data-aspek="<?= $O['ASPEK_PENILAIAN']; ?>" data-nilai="<?= $O['NILAI_KEPRIBADIAN']; ?>" data-deskripsi="<?= $O['DESKRIPSI']; ?>">Hapus</button>
                                                                 </td>
                                                             </tr>
                                                         <?php endforeach; ?>
@@ -205,9 +189,8 @@
                 </div> <!-- .row -->
             </div> <!-- .container-fluid -->
 
-            <!-- edit modal -->
-
             <?php foreach ($NilaiKepribadian->getResultArray() as $O) : ?>
+                <!-- edit modal -->
                 <form action="/wk/nilai_kepribadian/data/update">
                     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document" id="dokumen">
@@ -259,133 +242,66 @@
                         </div>
                     </div>
                 </form>
+                <!-- edit modal selesai -->
+
+                <!-- delete modal mulai -->
+                <form action="/wk/nilai_kepribadian/data/delete">
+                    <div class="modal modal-delete fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document" id="dokumen">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Hapus Nilai</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" class="form-control NISN" name="NISN" readonly="readonly">
+
+                                    <input type="hidden" class="form-control semester" name="semester" id="semester" readonly="readonly" value="<?= $KlikId; ?>">
+
+                                    <div class="form-group">
+                                        <label>NIS</label>
+                                        <input type="text" class="form-control NIS" name="NIS" readonly="readonly">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Nama Lengkap</label>
+                                        <input type="text" class="form-control NAMA_LENGKAP" name="NAMA_LENGKAP" readonly="readonly">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="ASPEK_PENILAIAN">Aspek penilaian</label>
+                                        <textarea class="form-control ASPEK_PENILAIAN" rows="5" name="ASPEK_PENILAIAN" readonly></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>NIlai Kepribadian</label>
+                                        <input type="number" class="form-control NILAI_KEPRIBADIAN" name="NILAI_KEPRIBADIAN" readonly>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="DESKRIPSI">Deskripsi</label>
+                                        <textarea class="form-control DESKRIPSI" rows="5" name="DESKRIPSI" readonly></textarea>
+                                    </div>
+
+                                    <h6 class="text-right">Hapus data nilai ini?</h6>
+                                </div>
+                                <div class="modal-footer">
+                                    <br>
+                                    <input type="hidden" name="NISN" class="NISN">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- delete modal selesai -->
             <?php endforeach; ?><br><br><br>
 
-            <!-- edit modal selesai -->
 
-            <div class="modal fade modal-notif modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-sm" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="defaultModalLabel">Notifications</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="list-group list-group-flush my-n3">
-                                <div class="list-group-item bg-transparent">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <span class="fe fe-box fe-24"></span>
-                                        </div>
-                                        <div class="col">
-                                            <small><strong>Package has uploaded successfull</strong></small>
-                                            <div class="my-0 text-muted small">Package is zipped and uploaded</div>
-                                            <small class="badge badge-pill badge-light text-muted">1m ago</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="list-group-item bg-transparent">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <span class="fe fe-download fe-24"></span>
-                                        </div>
-                                        <div class="col">
-                                            <small><strong>Widgets are updated successfull</strong></small>
-                                            <div class="my-0 text-muted small">Just create new layout Index, form, table</div>
-                                            <small class="badge badge-pill badge-light text-muted">2m ago</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="list-group-item bg-transparent">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <span class="fe fe-inbox fe-24"></span>
-                                        </div>
-                                        <div class="col">
-                                            <small><strong>Notifications have been sent</strong></small>
-                                            <div class="my-0 text-muted small">Fusce dapibus, tellus ac cursus commodo</div>
-                                            <small class="badge badge-pill badge-light text-muted">30m ago</small>
-                                        </div>
-                                    </div> <!-- / .row -->
-                                </div>
-                                <div class="list-group-item bg-transparent">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <span class="fe fe-link fe-24"></span>
-                                        </div>
-                                        <div class="col">
-                                            <small><strong>Link was attached to menu</strong></small>
-                                            <div class="my-0 text-muted small">New layout has been attached to the menu</div>
-                                            <small class="badge badge-pill badge-light text-muted">1h ago</small>
-                                        </div>
-                                    </div>
-                                </div> <!-- / .row -->
-                            </div> <!-- / .list-group -->
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Clear All</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade modal-shortcut modal-slide" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="defaultModalLabel">Shortcuts</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body px-5">
-                            <div class="row align-items-center">
-                                <div class="col-6 text-center">
-                                    <div class="squircle bg-success justify-content-center">
-                                        <i class="fe fe-cpu fe-32 align-self-center text-white"></i>
-                                    </div>
-                                    <p>Control area</p>
-                                </div>
-                                <div class="col-6 text-center">
-                                    <div class="squircle bg-primary justify-content-center">
-                                        <i class="fe fe-activity fe-32 align-self-center text-white"></i>
-                                    </div>
-                                    <p>Activity</p>
-                                </div>
-                            </div>
-                            <div class="row align-items-center">
-                                <div class="col-6 text-center">
-                                    <div class="squircle bg-primary justify-content-center">
-                                        <i class="fe fe-droplet fe-32 align-self-center text-white"></i>
-                                    </div>
-                                    <p>Droplet</p>
-                                </div>
-                                <div class="col-6 text-center">
-                                    <div class="squircle bg-primary justify-content-center">
-                                        <i class="fe fe-upload-cloud fe-32 align-self-center text-white"></i>
-                                    </div>
-                                    <p>Upload</p>
-                                </div>
-                            </div>
-                            <div class="row align-items-center">
-                                <div class="col-6 text-center">
-                                    <div class="squircle bg-primary justify-content-center">
-                                        <i class="fe fe-users fe-32 align-self-center text-white"></i>
-                                    </div>
-                                    <p>Users</p>
-                                </div>
-                                <div class="col-6 text-center">
-                                    <div class="squircle bg-primary justify-content-center">
-                                        <i class="fe fe-settings fe-32 align-self-center text-white"></i>
-                                    </div>
-                                    <p>Settings</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </main> <!-- main -->
     </div> <!-- .wrapper -->
     <script src="/js/jquery.min.js"></script>
@@ -425,11 +341,21 @@
 
             // get Delete Product
             $('.btn-delete').on('click', function() {
-                // get data from button edit
-                const idb = $(this).data('id');
-                // Set data to Form Edit
-                $('.barang_id').val(idb);
-                // Call Modal Edit
+                // get data from button delete
+                const jnisn = $(this).data('nisn');
+                const jnis = $(this).data('nis');
+                const jnama = $(this).data('nama');
+                const jaspek = $(this).data('aspek');
+                const jnilai = $(this).data('nilai');
+                const jdeskripsi = $(this).data('deskripsi');
+                // Set data to Form delete
+                $('.NISN').val(jnisn);
+                $('.NIS').val(jnis);
+                $('.NAMA_LENGKAP').val(jnama);
+                $('.ASPEK_PENILAIAN').val(jaspek);
+                $('.NILAI_KEPRIBADIAN').val(jnilai);
+                $('.DESKRIPSI').val(jdeskripsi).trigger('change');
+                // Call Modal delete
                 $('#deleteModal').modal('show');
             });
         });

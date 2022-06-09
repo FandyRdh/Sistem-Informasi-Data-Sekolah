@@ -645,12 +645,21 @@ class C_wali_kelas extends BaseController
 			session()->setFlashdata('pesan_hapus', 'Input nilai tidak sesuai.');
 		} else {
 			$NilaiMapelModel->query("UPDATE NILAI_KEPRIBADIAN 
-
 			set ASPEK_PENILAIAN = '$ASPEK_PENILAIAN', NILAI_KEPRIBADIAN = '$NILAI_KEPRIBADIAN', DESKRIPSI = '$DESKRIPSI'
 			WHERE NISN = '$NISN' AND ID_SEMESTER = '$Semester';");
 		}
 
+		return redirect()->to("/wk/nilai_kepribadian/$Semester");
+	}
 
+	public function nilaiKepribadianDelete()
+	{
+		$NilaiMapel = new \App\Models\NilaiMapelModel();
+		$NISN = $this->request->getVar('NISN');
+		$Semester = $this->request->getVar('semester');
+
+		$NilaiMapel->query("DELETE FROM NILAI_KEPRIBADIAN WHERE NISN = '$NISN' AND ID_SEMESTER = '$Semester';");
+		session()->setFlashdata('pesan_hapus', 'NIlai kepribadian berhasil dihapus.');
 
 		return redirect()->to("/wk/nilai_kepribadian/$Semester");
 	}
@@ -717,9 +726,7 @@ class C_wali_kelas extends BaseController
 		$IdSubKls = $this->SetSubKls();
 
 		$listSiswa = $NilaiMapelModel->query("SELECT NISN, NAMA_LENGKAP, NIS, ID_SUB_KLS FROM SISWA	WHERE ID_SUB_KLS = '$ID_SubKelas'");
-		$dataSiswa = $NilaiMapelModel->query("SELECT NISN, NAMA_LENGKAP, NIS, ID_SUB_KLS FROM SISWA	WHERE ID_SUB_KLS = '$ID_SubKelas'");
 
-		$subKls = $this->SetSubKls();
 		$NilaiKepribadian = $NilaiMapelModel->query("SELECT S.NIS, S.NISN, S.NAMA_LENGKAP, S.ID_SUB_KLS, NK.ASPEK_PENILAIAN, NK.NILAI_KEPRIBADIAN, NK.DESKRIPSI
 		FROM SISWA S
 		JOIN NILAI_KEPRIBADIAN NK
@@ -732,8 +739,7 @@ class C_wali_kelas extends BaseController
 			'title' => 'Nilai kepribadian | SDN Sidoketo',
 			'NilaiKepribadian' => $NilaiKepribadian,
 			'listSiswa' => $listSiswa,
-			'dataSiswa' => $dataSiswa,
-			// 'Mapel' => $this->SetMenu(),
+			'Mapel' => $this->SetMenu(session()->get),
 			'KlikId' => $idSmt,
 			'DataSemester' => $this->SetSmt(),
 			'namaSubKls' => $i['NAMA_SUB_KELAS']
@@ -765,8 +771,9 @@ class C_wali_kelas extends BaseController
 
 					$NilaiMapelModel->query("INSERT INTO NILAI_KEPRIBADIAN 
 					VALUES ('$NISN', '$Semester', '$aspek' , '$nilai', '$deskripsi');");
+					session()->setFlashdata('pesan_insert_berhasil', 'nilai kepribadian berhasil ditambahkan.');
 				} else {
-					session()->setFlashdata('pesan_insert2', 'nilai kepribadian sudah ada.');
+					session()->setFlashdata('pesan_insert_gagal', 'nilai kepribadian sudah ada.');
 				}
 			}
 

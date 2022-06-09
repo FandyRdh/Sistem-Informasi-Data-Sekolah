@@ -40,13 +40,12 @@ $routes->get('/Logout', 'C_Landing_Page::Logout');
 $routes->get('/About', 'C_Landing_Page::About');
 $routes->get('/Login/Logic_Login', 'C_Landing_Page::Logic_Login');
 
-
-
 // -------------------------Fandy Routs-----------------------------------------
 // Admin
 // $routes->get('/adm', 'C_Admin::indexku');
 $routes->get('/adm', 'C_Admin::Dashboard');
 $routes->get('/adm/dashboard', 'C_Admin::Dashboard');
+
 // Karyawan
 $routes->get('/adm/kry', 'C_Admin::karyawan/$1');
 $routes->get('/adm/kry/add', 'C_Admin::addKry');
@@ -63,7 +62,6 @@ $routes->get('/adm/kry/hapus/(:segment)', 'C_Admin::HapusKry/$1');
 
 // Nilai
 $routes->get('/adm/nilai/(:segment)/(:segment)', 'C_Admin::Nilai/$1/$2');
-
 
 // Siswa & Kelas
 $routes->get('/adm/snk', 'C_Admin::SiswaDanKelas');
@@ -106,8 +104,6 @@ $routes->get('/adm/cetak/CetakDataKelas/(:segment)', 'C_Admin::CetakDataKelas/$1
 
 // -------------------------HASAN ROUTS-------------------------------------------
 
-
-
 //Wali Kelas_Baru
 $routes->get('/wk/dashboard', 'C_wali_kelas::dashboard');
 $routes->get('/wk/data_siswa', 'C_wali_kelas::dataSiswa');
@@ -142,6 +138,7 @@ $routes->get('/wk/nilai_ekskul/data_detil/update', 'C_wali_kelas::D_nilaiEkskulU
 $routes->get('/wk/nilai_ekskul/data_detil/insert', 'C_wali_kelas::D_nilaiEkskulInsert');
 $routes->get('/wk/nilai_ekskul/data_detil/delete', 'C_wali_kelas::D_nilaiEkskulDelete');
 $routes->get('/wk/nilai_kepribadian/data/update', 'C_wali_kelas::nilaiKepribadianUpdate');
+$routes->get('/wk/nilai_kepribadian/data/delete', 'C_wali_kelas::nilaiKepribadianDelete');
 $routes->get('/wk/nilai_mapel/nm_mapel/smt/update', 'C_wali_kelas::nilaiMapelUpdate');
 $routes->get('/wk/absensi/update', 'C_wali_kelas::absensiUpdate');
 
